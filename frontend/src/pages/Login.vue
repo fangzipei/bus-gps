@@ -6,22 +6,40 @@
         <van-button type="primary" @click="onLoginClick('driver')">司机入口</van-button>
       </van-col>
       <van-col span="6">
-        <van-button type="primary" @click="onLoginClick('passenger')"
-          >乘客入口</van-button
-        >
+        <van-button type="primary" @click="onLoginClick('passenger')">乘客入口</van-button>
       </van-col>
     </van-row>
   </div>
+  <van-popup :show="formShow" position="bottom" :style="{ height: '25%' }">
+    <DriverForm @formData="onformDataEmit"></DriverForm>
+  </van-popup>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from '../stores/user';
+import DriverForm from '../components/DriverForm.vue';
 
+const store = useStore();
 const router = useRouter();
 
+const formShow = ref(false);
+
+const onformDataEmit = (values) => {
+  formShow.value = false;
+  console.log(values);
+  store.$patch({ type: 'driver' });
+  router.push('/home');
+};
+
 function onLoginClick(type) {
-  router.push({ name: 'home', params: { type } });
+  if (type === 'driver') {
+    formShow.value = true;
+  } else {
+    store.$patch({ type });
+    router.push('/home');
+  }
 }
 </script>
 
@@ -32,7 +50,7 @@ function onLoginClick(type) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url("../assets/bus.png"), linear-gradient(0deg, #fff, rgb(214,240,255));
+  background-image: url('../assets/bus.png'), linear-gradient(0deg, #fff, rgb(214, 240, 255));
   background-repeat: no-repeat;
   background-position: 50% 100%;
   background-size: 100%;
@@ -41,7 +59,7 @@ function onLoginClick(type) {
     margin-top: 80px;
     margin-bottom: 200px;
   }
-  .van-col+.van-col{
+  .van-col + .van-col {
     margin-left: 24px;
   }
 }

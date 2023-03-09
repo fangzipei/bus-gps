@@ -6,16 +6,29 @@ const routes = [
     redirect: '/login',
   },
   {
-    path: '/home/:type',
-    name: 'home',
-    title: '首页',
-    component: () => import('../pages/Home.vue'),
-  },
-  {
     path: '/login',
     name: 'login',
     title: '登录',
     component: () => import('../pages/Login.vue'),
+  },
+  {
+    path: '/',
+    name: 'menu',
+    component: () => import('../layouts/Menu.vue'),
+    children: [
+      {
+        path: '/home',
+        name: 'home',
+        title: '实时地图',
+        component: () => import('../pages/Home.vue'),
+      },
+      {
+        path: '/bus-list',
+        name: 'bus-list',
+        title: '公交搜索',
+        component: () => import('../pages/BusList.vue'),
+      },
+    ],
   },
 ];
 
