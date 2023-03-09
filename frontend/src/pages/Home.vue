@@ -145,7 +145,7 @@ function init() {
     map.flyTo({
       center: [localGeo.longitude, localGeo.latitude],
       zoom: 13,
-      duration: 12000,
+      duration: 5000,
       essential: true,
     });
     map.loadImage('/bus-point.png', (error, image) => {
@@ -160,21 +160,18 @@ function init() {
   });
 }
 
-function getLocalGeo() {
-  navigator.geolocation.getCurrentPosition(
-    (res) => {
-      localGeo.latitude = res.coords.latitude;
-      localGeo.longitude = res.coords.longitude;
-    },
-    (err) => {
-      getLocalGeo();
-    }
-  );
+function getLocalGeo(options) {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
 }
 
 onMounted(() => {
-  getLocalGeo();
-  init();
+  getLocalGeo().then((res) => {
+    localGeo.latitude = res.coords.latitude;
+    localGeo.longitude = res.coords.longitude;
+    init();
+  });
 });
 
 onBeforeUnmount(() => {

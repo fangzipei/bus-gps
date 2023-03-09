@@ -10,7 +10,7 @@
       </van-col>
     </van-row>
   </div>
-  <van-popup :show="formShow" position="bottom" :style="{ height: '25%' }">
+  <van-popup :show="formShow" position="bottom">
     <DriverForm @formData="onformDataEmit"></DriverForm>
   </van-popup>
 </template>
