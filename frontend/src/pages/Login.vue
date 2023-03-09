@@ -20,11 +20,14 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../stores/user';
 import DriverForm from '../components/DriverForm.vue';
+import { request } from '../http';
 
 const store = useStore();
 const router = useRouter();
 
 const formShow = ref(false);
+
+request('/busList', null, 'GET');
 
 const onformDataEmit = (values) => {
   formShow.value = false;
