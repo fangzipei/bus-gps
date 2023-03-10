@@ -218,6 +218,15 @@ function init() {
       });
       busData.busPath.forEach(({ id, coords }) => {
         drawBusPath(id, coords);
+        coords.forEach((point, index) => {
+          if (index === 0) {
+            drawStartPoint(`${id}-start-${index}`, point);
+          } else if (index === coords.length - 1) {
+            drawEndPoint(`${id}-end-${index}`, point);
+          } else {
+            drawBusStation(`${id}-station-${index}`, point);
+          }
+        });
       });
     });
   });
