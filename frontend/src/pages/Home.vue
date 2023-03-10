@@ -76,8 +76,8 @@ const busData = reactive({
   ],
 });
 
-function drawBusPoint(id, point) {
-  map.addSource(`${id}-source`, {
+function drawPoint(sourceId, layerId, layout, point) {
+  map.addSource(sourceId, {
     type: 'geojson',
     data: {
       type: 'FeatureCollection',
@@ -93,14 +93,61 @@ function drawBusPoint(id, point) {
     },
   });
   map.addLayer({
-    id: `${id}-layer`,
+    id: layerId,
     type: 'symbol',
-    source: `${id}-source`,
+    source: sourceId,
     layout: {
-      'icon-image': 'bus-point',
-      'icon-size': 0.15,
+      ...layout,
     },
   });
+}
+
+function drawBusPoint(id, point) {
+  drawPoint(
+    `${id}-source`,
+    `${id}-layer`,
+    {
+      'icon-image': 'bus-point',
+      'icon-size': 0.2,
+    },
+    point
+  );
+}
+
+function drawBusStation(id, point) {
+  drawPoint(
+    `${id}-source`,
+    `${id}-layer`,
+    {
+      'icon-image': 'bus-station',
+      'icon-size': 0.2,
+    },
+    point
+  );
+}
+
+function drawStartPoint(id, point) {
+  drawPoint(
+    `${id}-source`,
+    `${id}-layer`,
+    {
+      'icon-image': 'start-point',
+      'icon-size': 0.2,
+    },
+    point
+  );
+}
+
+function drawEndPoint(id, point) {
+  drawPoint(
+    `${id}-source`,
+    `${id}-layer`,
+    {
+      'icon-image': 'end-point',
+      'icon-size': 0.2,
+    },
+    point
+  );
 }
 
 function drawBusPath(id, path) {
@@ -130,6 +177,16 @@ function drawBusPath(id, path) {
   });
 }
 
+function loadImage(url, id) {
+  return new Promise((resolve, reject) => {
+    map.loadImage(url, (error, image) => {
+      if (error) reject(error);
+      map.addImage(id, image);
+      return resolve(image);
+    });
+  });
+}
+
 function init() {
   mapboxgl.accessToken = 'pk.eyJ1IjoiZW5jYWlrIiwiYSI6ImNrajJsY2NiZjI3aTAycnAzMmxjNHhkc2kifQ.AB2MHM2K_uAkMIHZYsm_dg';
   map = new mapboxgl.Map({
@@ -137,7 +194,9 @@ function init() {
     style: 'mapbox://styles/mapbox/streets-v12',
     ...start,
   });
-  mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js');
+  if (mapboxgl.getRTLTextPluginStatus() !== 'loaded') {
+    mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js');
+  }
   map.addControl(new MapboxLanguage({ defaultLanguage: 'zh-Hans' }));
   map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
   map.on('style.load', () => {
@@ -148,14 +207,18 @@ function init() {
       duration: 5000,
       essential: true,
     });
-    map.loadImage('/bus-point.png', (error, image) => {
-      map.addImage('bus-point', image);
+    Promise.all([
+      loadImage('/bus-point.png', 'bus-point'),
+      loadImage('/start-point.png', 'start-point'),
+      loadImage('/end-point.png', 'end-point'),
+      loadImage('/bus-station.png', 'bus-station'),
+    ]).then(() => {
       busData.busPoint.forEach(({ id, coords }) => {
         drawBusPoint(id, coords);
       });
-    });
-    busData.busPath.forEach(({ id, coords }) => {
-      drawBusPath(id, coords);
+      busData.busPath.forEach(({ id, coords }) => {
+        drawBusPath(id, coords);
+      });
     });
   });
 }
