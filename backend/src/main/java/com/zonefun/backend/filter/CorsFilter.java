@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -168,18 +167,18 @@ public class CorsFilter implements Filter {
      * @author ZoneFang
      */
     private boolean isWhiteListUrl(String url) {
-        String whiteList = env.getProperty("base.whiteListUrl");
-        if (!ObjectUtils.isEmpty(whiteList)) {
-            String[] arrWhiteList = whiteList.split(",");
-            boolean res = false;
-            for (String white : arrWhiteList) {
-                if (white.equals(url)) {
-                    res = true;
-                    break;
-                }
-            }
-            return res;
-        }
+//        String whiteList = env.getProperty("base.whiteListUrl");
+//        if (!ObjectUtils.isEmpty(whiteList)) {
+//            String[] arrWhiteList = whiteList.split(",");
+//            boolean res = false;
+//            for (String white : arrWhiteList) {
+//                if (white.equals(url)) {
+//                    res = true;
+//                    break;
+//                }
+//            }
+//            return res;
+//        }
         return true;
     }
 

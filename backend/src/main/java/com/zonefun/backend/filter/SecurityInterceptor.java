@@ -1,7 +1,6 @@
 package com.zonefun.backend.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,16 +20,17 @@ public class SecurityInterceptor implements HandlerInterceptor {
         if ("".equals(url)) {
             url = request.getRequestURI();
         }
-        if ((null != method && "OPTIONS".equals(method)) || isWhiteListUrl(url)) {
-            return true;
-        }
+//        if ((null != method && "OPTIONS".equals(method)) || isWhiteListUrl(url)) {
+//            return true;
+//        }
+        return true;
 // 后端权限管理
 //        if (this.hasPermission(handler, jwtValue, url)) {
 //            return true;
 //        }
-        // 如果没有权限 则抛403异常 springboot会处理，跳转到 /error/403 页面
-        response.sendError(HttpStatus.FORBIDDEN.value(), "无权限");
-        return false;
+//        // 如果没有权限 则抛403异常 springboot会处理，跳转到 /error/403 页面
+//        response.sendError(HttpStatus.FORBIDDEN.value(), "无权限");
+//        return false;
     }
 
 //    /**
@@ -88,15 +88,16 @@ public class SecurityInterceptor implements HandlerInterceptor {
     }
 
     private boolean isWhiteListUrl(String url) {
-        if (url.equals("/user/login") || url.equals("/user/logout") || url.equals("/favicon.ico") || url.equals("/doc.html") || url.startsWith("/webjars") || url.contains("/service-worker.js")
-                || url.contains("/swagger") || url.equals("/v3/api-docs") || url.equals("/captcha/get") || url.equals("/captcha/valid") || url.equals("/crypto/puk")
-                || url.equals("/cust/send") || url.equals("/cust/validContInfo") || url.equals("/cust/validSmsCode") || url.equals("/cust/validOrganInfo")
-                || url.equals("/cust/custLogin") || url.equals("/cust/custSmsLogin") || url.equals("/cust/resendLoginSms") || url.contains("test")
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+//        if (url.equals("/user/login") || url.equals("/user/logout") || url.equals("/favicon.ico") || url.equals("/doc.html") || url.startsWith("/webjars") || url.contains("/service-worker.js")
+//                || url.contains("/swagger") || url.equals("/v3/api-docs") || url.equals("/captcha/get") || url.equals("/captcha/valid") || url.equals("/crypto/puk")
+//                || url.equals("/cust/send") || url.equals("/cust/validContInfo") || url.equals("/cust/validSmsCode") || url.equals("/cust/validOrganInfo")
+//                || url.equals("/cust/custLogin") || url.equals("/cust/custSmsLogin") || url.equals("/cust/resendLoginSms") || url.contains("test")
+//        ) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return true;
     }
 
 }

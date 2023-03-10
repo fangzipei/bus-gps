@@ -31,7 +31,7 @@ import java.util.List;
 public class ExcelCreateMysqlSql {
 
     // excel文件路径
-    private static final String filePath = "C:\\Users\\GLSC\\Desktop\\excel生成sql模板.xlsx";
+    private static final String filePath = "D:\\Idea_workspace\\bus-gps\\backend\\src\\main\\resources\\excel.model\\excel生成sql模板.xlsx";
     // excel模板 该变量可以不写死通过读取model.xls文件第一行来做初始化 能更高可配置化
     private static final String[][] excelTemplate = new String[][]{
             {"是否主键", "primaryKey"},

@@ -112,11 +112,11 @@
             <version>3.9.1</version>
         </dependency>
         <!--flyway-->
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>7.10.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.flywaydb</groupId>-->
+<!--            <artifactId>flyway-core</artifactId>-->
+<!--            <version>7.10.0</version>-->
+<!--        </dependency>-->
         <!--aspect-->
         <dependency>
             <groupId>org.aspectj</groupId>

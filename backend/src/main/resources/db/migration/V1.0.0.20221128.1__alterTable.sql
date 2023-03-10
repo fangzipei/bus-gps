@@ -1,2 +1,0 @@
-ALTER TABLE `algorithm`.dictionary_catalog ADD CONSTRAINT dictionary_catalog_UN UNIQUE KEY (dict_no);
-ALTER TABLE `algorithm`.dictionary_item ADD CONSTRAINT dictionary_item_UN UNIQUE KEY (dict_no,item_value);

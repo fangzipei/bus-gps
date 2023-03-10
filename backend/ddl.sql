@@ -1,63 +1,67 @@
-create database secondhand;
--------------------------------
-create table `user_info`
+drop table bus_info ;
+drop table bus_position ;
+drop table bus_stop ;
+drop table bus_tour ;
+drop table stop_info ;
+-- -------------------------------------------------
+create table `bus_tour`
 	(
 	`id` int(11) auto_increment not null comment '主键',
-	`account` varchar(25)   comment '账号',
-	`password` varchar(60)   comment '密码',
-	`sex` char(1)   comment '性格',
-	`address` varchar(255)   comment '地址',
-	`tel` varchar(11)   comment '电话',
-	`status` char(1)   comment '状态',
-	`role` char(1)   comment '角色',
+	`driver_id` varchar(20)   comment '工号',
+	`bus_no` varchar(20)   comment '公交车号码',
+	`bus_schedule` int(3)   comment '公交班次',
+	`tour_date` datetime   comment '日期',
+	`heading_type` char(1)   comment '驶向(1-上行,2-下行)',
+	`now_stop` varchar(30)   comment '现在的站台',
+	`next_stop` varchar(30)   comment '下一个站台',
+	`is_end` char(1)   comment '是否结束了(1-未结束,2-已结束)',
 	primary key (id)
-	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '用户信息';
+	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '公交车运行情况';
 -- --------------------------------------------------------------------------------
-create table `user_log`
+create table `bus_position`
 	(
 	`id` int(11) auto_increment not null comment '主键',
-	`url` varchar(200)   comment '请求url',
-	`method` varchar(30)   comment '请求类型',
-	`ip` varchar(50)   comment '请求者ip',
-	`description` varchar(50)   comment '请求描述',
-	`parameter` text   comment '请求参数',
-	`result` text   comment '请求返回参数',
-	`spend_time` int(11)   comment '请求耗时(ms)',
-	`create_account` varchar(50)   comment '请求用户',
-	`start_time` datetime   comment '请求时间',
+	`tour_id` int(11)   comment '运行编号',
+	`longitude` varchar(30)   comment '经度',
+	`longitude_type` varchar(2)   comment '西经还是东经',
+	`latitude` varchar(30)   comment '纬度',
+	`latitude_type` varchar(2)   comment '南纬还是北纬',
+	`height` varchar(10)   comment '海拔',
+	`time` int(20)   comment '时间',
+	`velocity` int(5)   comment '速度(km/h)',
 	primary key (id)
-	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '用户日志表';
+	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '公交车位置';
 -- --------------------------------------------------------------------------------
-create table `dictionary`
+create table `bus_info`
 	(
 	`id` int(11) auto_increment not null comment '主键',
-	`dict_id` int(5)   comment '字典编号',
-	`dict_name` varchar(25)   comment '字典名称',
+	`bus_no` varchar(20)   comment '公交车号码',
+	`up_start` varchar(30)   comment '上行开始站台',
+	`up_end` varchar(10)   comment '上行结束站台',
+	`down_start` varchar(30)   comment '下行开始站台',
+	`down_end` varchar(10)   comment '下行结束站台',
+	`run_time` varchar(100)   comment '运行时间',
 	primary key (id)
-	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '字典表';
+	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '公交车信息';
 -- --------------------------------------------------------------------------------
-create table `dictionary_item`
+create table `stop_info`
 	(
 	`id` int(11) auto_increment not null comment '主键',
-	`dict_id` int(5)   comment '字典编号',
-	`item_id` int(5)   comment '字典值编号',
-	`item_name` varchar(25)   comment '字典值名称',
+	`stop_name` varchar(30)   comment '站台名',
+	`longitude` varchar(30)   comment '经度',
+	`longitude_type` varchar(2)   comment '西经还是东经',
+	`latitude` varchar(30)   comment '纬度',
+	`latitude_type` varchar(2)   comment '南纬还是北纬',
 	primary key (id)
-	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '字典值表';
+	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '站台信息';
 -- --------------------------------------------------------------------------------
-create table `house_info`
+create table `bus_stop`
 	(
 	`id` int(11) auto_increment not null comment '主键',
-	`estate_name` varchar(255)   comment '小区名',
-	`address` varchar(255)   comment '房子地址',
-	`description` varchar(255)   comment '描述',
-	`area` int(11)   comment '面积',
-	`unit_price` int(11)   comment '单价',
-	`total_price` int(22)   comment '总价',
-	`picture1` mediumblob   comment '照片1',
-	`picture2` mediumblob   comment '照片2',
-	`picture3` mediumblob   comment '照片3',
-	`score` int(3)   comment '评分',
+	`bus_no` varchar(20)   comment '公交车号码',
+	`sequence` int(3)   comment '站台顺序',
+	`stop_name` varchar(30)   comment '站台名',
+	`heading_type` char(1)   comment '驶向(1-上行,2-下行)',
 	primary key (id)
-	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '二手房信息';
+	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '公交站台信息';
 -- --------------------------------------------------------------------------------
