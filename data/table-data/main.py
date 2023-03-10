@@ -15,7 +15,7 @@ if __name__ == "__main__":
     stop_sql = "insert into stop_info(stop_name, longitude, latitude) values "
     line_sql = "insert into bus_stop(bus_no, sequence, stop_name, heading_type) values "
     bus_sql = "insert into bus_info(bus_no, up_start, up_end, down_start, down_end) values "
-    update_bus = "update bus_info set down_start = '{}', down_end = '{}' where bus_no = '{}' "
+    update_bus = r"update bus_info set down_start = '{}', down_end = '{}' where bus_no = '{}' "
     bus_map = {}
     stop_map = {}
     stop_sql_param = ""
@@ -31,10 +31,11 @@ if __name__ == "__main__":
         if bus_no in bus_map.keys() and bus_map[bus_no][0] != stop_arr:
             heading_type = 2
             if len(bus_map[bus_no]) == 1:
-                bus_map[bus_no].append([stop_arr])
+                bus_map[bus_no].append(stop_arr)
                 update_bus_temp = update_bus[:]
-                update_bus_temp.format(stop_arr[0], stop_arr[1], bus_no)
+                update_bus_temp = update_bus_temp.format(stop_arr[0], stop_arr[1], bus_no)
                 try:
+                    print('更新公交下行站台：', update_bus_temp)
                     cursor.execute(update_bus_temp)
                     connection.commit()
                     print("公交：{}，下行站台：{},{}，添加成功".format(bus_no, stop_arr[0], stop_arr[1]))
