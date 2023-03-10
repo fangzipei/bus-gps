@@ -29,6 +29,7 @@
 		"prettier": "^2.8.4",
 		"unplugin-vue-components": "^0.24.1",
 		"vite": "^4.1.0",
-		"vite-plugin-eslint": "^1.8.1"
+		"vite-plugin-eslint": "^1.8.1",
+		"vite-plugin-mkcert": "^1.13.3"
 	}
 }

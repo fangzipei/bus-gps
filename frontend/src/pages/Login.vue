@@ -10,7 +10,7 @@
       </van-col>
     </van-row>
   </div>
-  <van-popup :show="formShow" position="bottom">
+  <van-popup :show="formShow" position="bottom" @close="closePopup" :close-on-click-overlay="true">
     <DriverForm @formData="onformDataEmit"></DriverForm>
   </van-popup>
 </template>
@@ -34,6 +34,10 @@ const onformDataEmit = (values) => {
   console.log(values);
   store.$patch({ type: 'driver' });
   router.push('/home');
+};
+
+const closePopup = () => {
+  formShow.value = false;
 };
 
 function onLoginClick(type) {
