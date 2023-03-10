@@ -1,6 +1,6 @@
 import pymysql
 import pandas as pd
-from .settings import DATABASES
+from settings import DATABASES
 
 if __name__ == "__main__":
     host = DATABASES["default"]["HOST"]
@@ -13,8 +13,8 @@ if __name__ == "__main__":
 
     data = pd.read_csv("wulumuqi_station.csv")
     stop_sql = "insert into stop_info(stop_name, longitude, latitude) values "
-    line_sql = "insert into bus_stop(bus_no, order, stop_name, heading_type) values"
-    bus_sql = "insert into bus_info(bus_no, up_start, up_end, down_start, down_end) values"
+    line_sql = "insert into bus_stop(bus_no, sequence, stop_name, heading_type) values "
+    bus_sql = "insert into bus_info(bus_no, up_start, up_end, down_start, down_end) values "
     update_bus = "update bus_info set down_start = '{}', down_end = '{}' where bus_no = '{}' "
     bus_map = {}
     stop_map = {}
@@ -28,29 +28,29 @@ if __name__ == "__main__":
         stop_arr = start_end_stop.split("--")
         heading_type = 1
         # bus_info表更新
-        if bus_no in bus_map.keys() and (bus_map[bus_no][0] != stop_arr).all():
+        if bus_no in bus_map.keys() and bus_map[bus_no][0] != stop_arr:
             heading_type = 2
-            if len(bus_map) == 1:
+            if len(bus_map[bus_no]) == 1:
                 bus_map[bus_no].append([stop_arr])
-                update_bus_temp = update_bus.copy()
+                update_bus_temp = update_bus[:]
                 update_bus_temp.format(stop_arr[0], stop_arr[1], bus_no)
                 try:
                     cursor.execute(update_bus_temp)
                     connection.commit()
                     print("公交：{}，下行站台：{},{}，添加成功".format(bus_no, stop_arr[0], stop_arr[1]))
                 except Exception as e:
-                    print(e)
+                    print(e, " 第{}行".format(i))
         elif bus_no not in bus_map.keys():
             bus_map[bus_no] = [[stop_arr[0], stop_arr[1]]]
-            bus_sql_temp = bus_sql.copy()
-            bus_sql_temp += "({},{},{},{},{})".format(bus_no, stop_arr[0], stop_arr[1])
+            bus_sql_temp = bus_sql[:]
+            bus_sql_temp += "('{}','{}','{}','{}','{}')".format(bus_no, stop_arr[0], stop_arr[1], '', '')
             try:
                 cursor.execute(bus_sql_temp)
                 connection.commit()
                 print("公交：{}，上行站台：{},{}，添加成功".format(bus_no, stop_arr[0], stop_arr[1]))
             except Exception as e:
                 connection.rollback()
-                print(e)
+                print(e, " 第{}行".format(i))
 
         # stop_info及bus_stop更新
         stop_name = data['station_name'][i]
@@ -62,11 +62,11 @@ if __name__ == "__main__":
         else:
             line_sql_param += ", ('{}',{},'{}','{}')".format(bus_no, order, stop_name, heading_type)
         if stop_name not in stop_map.keys():
-            stop_map[stop_name] = [x,y]
+            stop_map[stop_name] = [x, y]
             if stop_sql_param == "":
-                stop_sql_param += "('{}','{}','{})".format(bus_no, x, y)
+                stop_sql_param += "('{}','{}','{}')".format(stop_name, x, y)
             else:
-                stop_sql_param += ", ('{}','{}','{})".format(bus_no, x, y)
+                stop_sql_param += ", ('{}','{}','{}')".format(stop_name, x, y)
         if i % 100 == 0:
             try:
                 cursor.execute(stop_sql + stop_sql_param)
@@ -76,20 +76,20 @@ if __name__ == "__main__":
                 line_sql_param = ""
             except Exception as e:
                 connection.rollback()
-                print(e)
+                print(e, " 第{}行".format(i))
     if line_sql_param != "":
         try:
             cursor.execute(line_sql + line_sql_param)
             connection.commit()
         except Exception as e:
             connection.rollback()
-            print(e)
+            print(e, " 第{}行".format(i))
     if stop_sql_param != "":
         try:
             cursor.execute(stop_sql + stop_sql_param)
             connection.commit()
         except Exception as e:
             connection.rollback()
-            print(e)
+            print(e, " 第{}行".format(i))
     cursor.close()
     connection.close()
