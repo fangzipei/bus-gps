@@ -16,8 +16,8 @@ export default defineConfig({
   ],
   server: {
     https: {
-      key: fs.readFileSync(path.join(__dirname, './cert/mkcert+3-key.pem')),
-      cert: fs.readFileSync(path.join(__dirname, './cert/mkcert+3.pem')),
+      key: fs.readFileSync(path.join(__dirname, './cert/mkcert-key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, './cert/mkcert.pem')),
     },
     host: '0.0.0.0',
     port: 8080,
@@ -25,7 +25,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (str) => str.replace(/^\/api/, ''),
       },
     },
   },

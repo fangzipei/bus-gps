@@ -19,5 +19,8 @@ module.exports = {
     'no-plusplus': 'off',
     'no-param-reassign': 'off',
     'consistent-return': 'off',
+    'import/no-unresolved': 'off',
+    'import/extensions': 'off',
+    'import/no-absolute-path': 'off',
   },
 };
