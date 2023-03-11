@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Toast } from 'vant';
+import { showToast } from 'vant';
 import { showMessage } from './status';
 
 // 设置接口超时时间
@@ -30,7 +30,7 @@ axios.interceptors.response.use(
   (response) => {
     const { data } = response;
     if (data.code === 500) {
-      showMessage(data.message);
+      showToast(data.message);
       return;
     }
     return data;
@@ -38,10 +38,10 @@ axios.interceptors.response.use(
   (error) => {
     const { response } = error;
     if (response) {
-      showMessage(response.status);
+      showToast(showMessage(response.status));
       return Promise.reject(response.data);
     }
-    Toast('网络连接异常,请稍后再试!');
+    showToast('网络连接异常,请稍后再试!');
   }
 );
 

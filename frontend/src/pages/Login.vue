@@ -30,20 +30,22 @@ const formShow = ref(false);
 
 const onformDataEmit = (values) => {
   formShow.value = false;
-  getLocalGeo.then((pos) => {
+  getLocalGeo().then((pos) => {
     request(
       '/common/login',
       {
-        busNo: values.busId,
+        busNo: values.busNo,
         driverId: values.driverId,
         latitude: pos.coords.latitude,
         longitude: pos.coords.longitude,
       },
       'POST'
-    );
+    ).then((res) => {
+      console.log(res);
+      store.$patch({ type: 'driver' });
+      router.push('/home');
+    });
   });
-  store.$patch({ type: 'driver' });
-  router.push('/home');
 };
 
 const closePopup = () => {
