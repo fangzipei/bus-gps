@@ -4,24 +4,18 @@ module.exports = {
   useTabs: false,
   semi: true,
   singleQuote: true,
-  quoteProps:
-    'as-needed',
+  quoteProps: 'as-needed',
   jsxSingleQuote: false,
-  trailingComma:
-    'es5',
+  trailingComma: 'es5',
   bracketSpacing: true,
   jsxBracketSameLine: false,
-  arrowParens:
-    'always',
+  arrowParens: 'always',
   rangeStart: 0,
-  rangeEnd:
-    Infinity,
+  rangeEnd: Infinity,
   requirePragma: false,
   insertPragma: false,
-  proseWrap:
-    'preserve',
-  htmlWhitespaceSensitivity:
-    'css',
+  proseWrap: 'preserve',
+  htmlWhitespaceSensitivity: 'css',
   vueIndentScriptAndStyle: false,
   endOfLine: 'lf',
 };
