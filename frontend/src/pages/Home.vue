@@ -7,6 +7,7 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxLanguage from '@mapbox/mapbox-gl-language';
+import { getLocalGeo } from '../utils/index';
 
 const mapel = ref(null);
 let map; // 地图
@@ -34,6 +35,10 @@ const busData = reactive({
     {
       id: '3',
       coords: [118.6438032224608, 32.05405432712121],
+    },
+    {
+      id: '4',
+      coords: [87.57372966328714, 43.82961794634063],
     },
   ],
   busPath: [
@@ -213,9 +218,6 @@ function init() {
       loadImage('/end-point.png', 'end-point'),
       loadImage('/bus-station.png', 'bus-station'),
     ]).then(() => {
-      busData.busPoint.forEach(({ id, coords }) => {
-        drawBusPoint(id, coords);
-      });
       busData.busPath.forEach(({ id, coords }) => {
         drawBusPath(id, coords);
         coords.forEach((point, index) => {
@@ -228,13 +230,10 @@ function init() {
           }
         });
       });
+      busData.busPoint.forEach(({ id, coords }) => {
+        drawBusPoint(id, coords);
+      });
     });
-  });
-}
-
-function getLocalGeo(options) {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
   });
 }
 

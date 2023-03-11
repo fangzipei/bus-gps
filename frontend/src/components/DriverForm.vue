@@ -11,10 +11,22 @@
       <van-field
         v-model="busId"
         name="busId"
+        is-link
+        readonly
         label="公交线路"
-        placeholder="请输入公交线路"
+        placeholder="请选择公交线路"
         :rules="[{ required: true, message: '请填写公交线路' }]"
+        @click="showPicker = true"
       />
+      <van-popup v-model:show="showPicker" round position="bottom">
+        <van-picker
+          :columns="dataList.busList"
+          :columns-field-names="customFieldName"
+          :default-index="0"
+          @cancel="showPicker = false"
+          @confirm="onConfirm"
+        />
+      </van-popup>
     </van-cell-group>
     <div style="margin: 16px">
       <van-button round block type="primary" native-type="submit"> 提交 </van-button>
@@ -23,11 +35,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import { request } from '../http';
 
 const emit = defineEmits(['formData']);
 const driverId = ref('');
 const busId = ref('');
+const showPicker = ref(false);
+const customFieldName = { text: 'busNo', values: 'id' };
+const dataList = reactive({
+  busList: [],
+});
+
+request('/common/getBusInfos', null, 'GET').then((res) => {
+  dataList.busList.value = res.data;
+  console.log(dataList.busList);
+});
+
+const onConfirm = (value) => {
+  busId.value = value;
+  showPicker.value = false;
+};
 
 const onSubmit = (values) => {
   emit('formData', values);
