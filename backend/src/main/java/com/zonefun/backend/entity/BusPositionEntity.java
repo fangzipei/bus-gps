@@ -49,7 +49,7 @@ public class BusPositionEntity implements Serializable {
     private String height;
 
     @ApiModelProperty("时间")
-    private Integer time;
+    private long time;
 
     @ApiModelProperty("速度(km/h)")
     private Integer velocity;

@@ -35,7 +35,7 @@ public class Knife4jConfig {
                 .apiInfo(apiInfoBuilder())
                 .select()
                 // Api包
-                .apis(RequestHandlerSelectors.basePackage("com.zonefun.algorithm.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.zonefun.backend.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

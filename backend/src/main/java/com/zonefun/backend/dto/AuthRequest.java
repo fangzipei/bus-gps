@@ -1,4 +1,4 @@
-package com.zonefun.algorithm.dto;
+package com.zonefun.backend.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

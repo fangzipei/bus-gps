@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @ClassName com.zonefun.algorithm.DataMapGenerator
+ * @ClassName com.zonefun.backend.DataMapGenerator
  * @Description 数据字典生成器
  * @Date 2022/8/22 11:17
  * @Author ZoneFang

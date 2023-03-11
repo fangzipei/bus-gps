@@ -1,7 +1,10 @@
 package com.zonefun.backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zonefun.backend.dto.QueryPositionsResponse;
 import com.zonefun.backend.entity.BusPositionEntity;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.zonefun.backend.entity.BusPositionEntity;
  */
 public interface IBusPositionService extends IService<BusPositionEntity> {
 
+    void savePosition(String longitude, String latitude, int tourId);
+
+    List<QueryPositionsResponse> queryPositions(String busNo);
 }

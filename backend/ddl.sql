@@ -10,7 +10,7 @@ create table `bus_tour`
 	`driver_id` varchar(20)   comment '工号',
 	`bus_no` varchar(20)   comment '公交车号码',
 	`bus_schedule` int(3)   comment '公交班次',
-	`tour_date` datetime   comment '日期',
+	`tour_date` int(10)   comment '日期',
 	`heading_type` char(1)   comment '驶向(1-上行,2-下行)',
 	`now_stop` varchar(30)   comment '现在的站台',
 	`next_stop` varchar(30)   comment '下一个站台',
@@ -65,3 +65,8 @@ create table `bus_stop`
 	primary key (id)
 	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '公交站台信息';
 -- --------------------------------------------------------------------------------
+CREATE INDEX bus_stop_bus_no_IDX USING BTREE ON bus.bus_stop (bus_no,heading_type);
+CREATE INDEX bus_stop_bus_no_comb_IDX USING BTREE ON bus.bus_stop (bus_no,heading_type,`sequence`);
+CREATE INDEX stop_info_stop_name_IDX USING BTREE ON bus.stop_info (stop_name);
+CREATE INDEX bus_position_tour_id_IDX USING BTREE ON bus.bus_position (tour_id);
+CREATE INDEX bus_position_tour_id_time_IDX USING BTREE ON bus.bus_position (tour_id,`time`);

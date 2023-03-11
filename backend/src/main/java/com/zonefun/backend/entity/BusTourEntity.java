@@ -41,7 +41,7 @@ public class BusTourEntity implements Serializable {
     private Integer busSchedule;
 
     @ApiModelProperty("日期")
-    private LocalDateTime tourDate;
+    private long tourDate;
 
     @ApiModelProperty("驶向(1-上行,2-下行)")
     private String headingType;

@@ -24,7 +24,7 @@ public interface DictionaryCatalogMapper extends BaseMapper<DictionaryCatalog> {
      * 通过字典英文名获取字典项列表
      *
      * @param dictEnglishName 字典英文名
-     * @return java.util.List<com.zonefun.algorithm.vo.DictionaryExtend>
+     * @return java.util.List<com.zonefun.backend.vo.DictionaryExtend>
      * @date 2022/11/24 11:25
      * @author ZoneFang
      */

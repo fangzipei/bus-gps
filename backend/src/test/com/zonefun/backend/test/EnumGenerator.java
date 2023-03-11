@@ -1,6 +1,7 @@
 package com.zonefun.backend.test;
 
-import com.zonefun.backend.AlgorithmApplication;
+import com.zonefun.backend.BusApplication;
+import com.zonefun.backend.entity.BusStopEntity;
 import com.zonefun.backend.mapper.DictionaryCatalogMapper;
 import com.zonefun.backend.util.CodeTypeTransferUtil;
 import com.zonefun.backend.vo.DictionaryExtend;
@@ -28,7 +29,7 @@ import java.util.*;
  * @Author ZoneFang
  */
 @Slf4j
-@SpringBootTest(classes = AlgorithmApplication.class)
+@SpringBootTest(classes = BusApplication.class)
 public class EnumGenerator {
     // 数据库表对应生成的mapper
     @Autowired
@@ -36,7 +37,7 @@ public class EnumGenerator {
     // 文件后缀
     private final String suffix = ".java";
     // 生成枚举类里面的包名
-    private final String packageName = "com.zonefun.algorithm";
+    private final String packageName = "com.zonefun.backend";
     // 类上的日期
     private final String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     // 枚举类描述
@@ -48,7 +49,7 @@ public class EnumGenerator {
     // freemarker 模板的名字
     private final String templateName = "enum.ftl";
     // enum文件生成路径
-    private final String path = "src/main/java/com/zonefun/algorithm/enums/";
+    private final String path = "src/main/java/com/zonefun/backend/enums/";
     // 字典项英文名 // fixme
     private final String dictionaryEnglishName = "file_use_type";
 

@@ -1,6 +1,7 @@
 package com.zonefun.backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zonefun.backend.dto.LoginResponse;
 import com.zonefun.backend.entity.BusTourEntity;
 
 /**
@@ -13,4 +14,7 @@ import com.zonefun.backend.entity.BusTourEntity;
  */
 public interface IBusTourService extends IService<BusTourEntity> {
 
+    LoginResponse login(String busNo, String driverId, String longitude, String latitude);
+
+    void endTour(String busNo, String driverId);
 }

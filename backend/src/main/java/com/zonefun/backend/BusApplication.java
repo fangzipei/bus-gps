@@ -3,6 +3,7 @@ package com.zonefun.backend;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -16,8 +17,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAspectJAutoProxy(exposeProxy = true)
 @MapperScan({"com.zonefun.backend.mapper"})
 @EnableTransactionManagement
-public class AlgorithmApplication {
+@EnableCaching
+public class BusApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AlgorithmApplication.class, args);
+        SpringApplication.run(BusApplication.class, args);
     }
 }

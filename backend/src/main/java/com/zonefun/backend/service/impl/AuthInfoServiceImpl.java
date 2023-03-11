@@ -1,4 +1,4 @@
-//package com.zonefun.algorithm.service.impl;
+//package com.zonefun.backend.service.impl;
 //
 //import com.github.pagehelper.PageHelper;
 //import com.glsc.dscp.constant.DsConstant;
@@ -8,7 +8,7 @@
 //import com.glsc.dscp.model.AuthInfo;
 //import com.glsc.dscp.model.AuthInfoExample;
 //import com.glsc.dscp.service.IAuthInfoService;
-//import com.zonefun.algorithm.util.ClassUtil;
+//import com.zonefun.backend.util.ClassUtil;
 //import io.swagger.annotations.ApiOperation;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Controller;
@@ -197,7 +197,7 @@
 //        // 插入表中的数据
 //        List<AuthInfo> authInfos = new ArrayList<>();
 //        // 获取后台管理接口包下所有接口类
-//        Set<Class<?>> classes = ClassUtil.getClassByPackage("com.zonefun.algorithm.controller", false, Controller.class, RestController.class, RequestMapping.class);
+//        Set<Class<?>> classes = ClassUtil.getClassByPackage("com.zonefun.backend.controller", false, Controller.class, RestController.class, RequestMapping.class);
 //        for (Class aClass : classes) {
 //            // 获取类上的前缀url
 //            RequestMapping classRequestMapping = (RequestMapping) aClass.getAnnotation(RequestMapping.class);

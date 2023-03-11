@@ -39,7 +39,7 @@ public class LogAspect {
     @Autowired
     private AllLogMapper allLogMapper;
 
-    @Pointcut("execution(* com.zonefun.algorithm.controller.*.*(..))")
+    @Pointcut("execution(* com.zonefun.backend.controller.*.*(..))")
     public void log() {
     }
 

@@ -29,12 +29,12 @@ public class CommonException extends RuntimeException {
     }
 
     public CommonException(String message) {
-        this.code = 400;
+        this.code = 500;
         this.message = message;
     }
 
     public CommonException(String message, Throwable e) {
-        this.code = 400;
+        this.code = 500;
         this.message = message;
         this.e = e;
     }
