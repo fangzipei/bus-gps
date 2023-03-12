@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Toast } from 'vant';
+import { showToast } from 'vant';
 import { showMessage } from './status';
 
 // 设置接口超时时间
@@ -7,7 +7,7 @@ axios.defaults.timeout = 60000;
 
 // 请求地址，这里是动态赋值的的环境变量，下一篇会细讲，这里跳过
 // @ts-ignore
-axios.defaults.baseURL = '/api';
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 // http request 拦截器
 axios.interceptors.request.use(
@@ -28,15 +28,20 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
   (response) => {
-    return response;
+    const { data } = response;
+    if (data.code === 500) {
+      showToast(data.message);
+      return;
+    }
+    return data;
   },
   (error) => {
     const { response } = error;
     if (response) {
-      showMessage(response.status);
+      showToast(showMessage(response.status));
       return Promise.reject(response.data);
     }
-    Toast('网络连接异常,请稍后再试!');
+    showToast('网络连接异常,请稍后再试!');
   }
 );
 
