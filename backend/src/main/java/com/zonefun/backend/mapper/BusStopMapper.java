@@ -20,7 +20,7 @@ public interface BusStopMapper extends BaseMapper<BusStopEntity> {
     @Select("select * from bus_stop where bus_no = #{busNo} and heading_type = #{headingType} " +
             "and sequence = (" +
             "select sequence from bus_stop where bus_no = #{busNo} and heading_type = #{headingType} " +
-            "and stop_name = #{nowStop})")
+            "and stop_name = #{nowStop}) + 1")
     BusStopEntity getNextStop(@Param("busNo") String busNo, @Param("nowStop") String nowStop,
                               @Param("headingType") String headingType);
 }

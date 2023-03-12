@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -52,7 +53,7 @@ public class BusPositionEntity implements Serializable {
     private long time;
 
     @ApiModelProperty("速度(km/h)")
-    private Integer velocity;
+    private double velocity;
 
 
 }

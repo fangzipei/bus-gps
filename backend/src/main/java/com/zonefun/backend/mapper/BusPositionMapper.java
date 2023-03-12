@@ -30,4 +30,7 @@ public interface BusPositionMapper extends BaseMapper<BusPositionEntity> {
             "</if>" +
             "</script>")
     List<QueryPositionsResponse> queryPositions(@Param("busNo") String busNo);
+
+    @Select("select * from bus_position bp where tour_id = #{tourId} order by time desc limit 1")
+    BusPositionEntity getLatestPosition(@Param("tourId") int tourId);
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collections;
+import java.util.Scanner;
 
 /**
  * @ClassName MapperGenerator
@@ -33,8 +34,8 @@ public class MapperGenerator {
                 .templateConfig(builder -> {
                     builder.disable(TemplateType.CONTROLLER, TemplateType.SERVICE, TemplateType.MAPPER);
                 })
-                .globalConfig(builder -> {
-                    builder.author("ZoneFun") // 设置作者
+                .globalConfig((scanner, builder) -> {
+                    builder.author(scanner.apply("请输入作者名称？")) // 设置作者
                             .enableSwagger() // 开启 swagger 模式
                             .disableOpenDir()
                             .fileOverride() // 文件覆盖已经开启

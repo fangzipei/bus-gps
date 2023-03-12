@@ -28,7 +28,7 @@ create table `bus_position`
 	`latitude_type` varchar(2)   comment '南纬还是北纬',
 	`height` varchar(10)   comment '海拔',
 	`time` int(20)   comment '时间',
-	`velocity` int(5)   comment '速度(km/h)',
+	`velocity` decimal(7,2)   comment '速度(km/h)',
 	primary key (id)
 	) engine=innodb collate='utf8mb4_0900_ai_ci' comment '公交车位置';
 -- --------------------------------------------------------------------------------

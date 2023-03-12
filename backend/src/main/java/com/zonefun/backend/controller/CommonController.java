@@ -55,8 +55,11 @@ public class CommonController {
 
     @PostMapping("/savePosition")
     @ApiOperation("保存地点")
-    public CommonResult savePosition(@RequestBody SavePositionRequest request) {
-        return CommonResult.success();
+    public CommonResult<SavePositionResponse> savePosition(@RequestBody SavePositionRequest request) {
+        SavePositionResponse savePositionResponse =
+                busPositionService.savePosition(request.getLongitude(), request.getLatitude(),
+                        request.getTourId(), request.getVelocity());
+        return CommonResult.success(savePositionResponse);
     }
 
     @GetMapping("/clientQuery")
@@ -67,7 +70,7 @@ public class CommonController {
 
     @GetMapping("/queryPositions")
     @ApiOperation("客户端查询位置")
-    public CommonResult<List<QueryPositionsResponse>> queryPositions(@RequestParam("busNo") String busNo){
+    public CommonResult<List<QueryPositionsResponse>> queryPositions(@RequestParam("busNo") String busNo) {
         return CommonResult.success(busPositionService.queryPositions(busNo));
     }
 }
