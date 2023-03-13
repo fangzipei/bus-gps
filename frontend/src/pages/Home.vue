@@ -55,13 +55,14 @@ function removePoint(id) {
   if (map.getSource(`${id}-source`)) map.removeSource(`${id}-source`);
 }
 
-function drawBusPoint(id, point) {
+function drawBusPoint(id, point, paint) {
   drawPoint(
     `${id}-source`,
     `${id}-layer`,
     {
       'icon-image': 'bus-point',
       'icon-size': 0.2,
+      ...paint,
     },
     point
   );
@@ -186,7 +187,11 @@ function queryGps() {
       }
       res.data.forEach((item) => {
         data.busPointList.push(item.id);
-        drawBusPoint(item.id, [item.longitude, item.latitude]);
+        drawBusPoint(item.id, [item.longitude, item.latitude], {
+          'text-field': item.busNo,
+          'text-offset': [0, 1],
+          'text-size': 12,
+        });
       });
     } else {
       showToast(res.message);
