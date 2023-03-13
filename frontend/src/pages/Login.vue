@@ -18,6 +18,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { showToast } from 'vant';
 import { useStore } from '../stores/user';
 import DriverForm from '../components/DriverForm.vue';
 import { request } from '../http';
@@ -41,9 +42,12 @@ const onformDataEmit = (values) => {
       },
       'POST'
     ).then((res) => {
-      console.log(res);
-      store.$patch({ type: 'driver' });
-      router.push('/home');
+      if (res.code !== 500) {
+        store.$patch({ type: 'driver', tourId: res.data.tourId });
+        router.push('/home');
+      } else {
+        showToast(res.message);
+      }
     });
   });
 };

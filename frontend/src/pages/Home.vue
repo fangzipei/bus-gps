@@ -7,10 +7,17 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxLanguage from '@mapbox/mapbox-gl-language';
+import { showToast } from 'vant';
+import { useRouter } from 'vue-router';
 import { getLocalGeo } from '../utils/index';
+import { useStore } from '../stores/user';
+import { request } from '../http';
 
+const store = useStore();
+const router = useRouter();
 const mapel = ref(null);
 let map; // 地图
+let driverTimer = null;
 const start = {
   center: [80, 80],
   zoom: 1,
@@ -192,6 +199,60 @@ function loadImage(url, id) {
   });
 }
 
+function saveGps() {
+  getLocalGeo().then((pos) => {
+    const longitude = pos.coords.longitude;
+    const latitude = pos.coords.latitude;
+    if (map.getLayer('driverBusPoint-layer')) map.removeLayer('driverBusPoint-layer');
+    if (map.getSource('driverBusPoint-source')) map.removeSource('driverBusPoint-source');
+    drawBusPoint('driverBusPoint', [longitude, latitude]);
+    request(
+      '/common/savePosition',
+      {
+        latitude,
+        longitude,
+        tourId: store.$state.tourId,
+      },
+      'POST'
+    ).then((res) => {
+      if (res.code !== 500) {
+        if (res.data.isEnd === '2') {
+          router.push('/login');
+        }
+      } else {
+        showToast(res.message);
+      }
+    });
+    map.easeTo({
+      center: [longitude, latitude],
+      zoom: 13,
+    });
+  });
+}
+
+function mapPointInit() {
+  if (store.$state.type === 'driver') {
+    saveGps();
+    driverTimer = setInterval(saveGps, 1000 * 5);
+  } else {
+    busData.busPath.forEach(({ id, coords }) => {
+      drawBusPath(id, coords);
+      coords.forEach((point, index) => {
+        if (index === 0) {
+          drawStartPoint(`${id}-start-${index}`, point);
+        } else if (index === coords.length - 1) {
+          drawEndPoint(`${id}-end-${index}`, point);
+        } else {
+          drawBusStation(`${id}-station-${index}`, point);
+        }
+      });
+    });
+    busData.busPoint.forEach(({ id, coords }) => {
+      drawBusPoint(id, coords);
+    });
+  }
+}
+
 function init() {
   mapboxgl.accessToken = 'pk.eyJ1IjoiZW5jYWlrIiwiYSI6ImNrajJsY2NiZjI3aTAycnAzMmxjNHhkc2kifQ.AB2MHM2K_uAkMIHZYsm_dg';
   map = new mapboxgl.Map({
@@ -217,23 +278,7 @@ function init() {
       loadImage('/start-point.png', 'start-point'),
       loadImage('/end-point.png', 'end-point'),
       loadImage('/bus-station.png', 'bus-station'),
-    ]).then(() => {
-      busData.busPath.forEach(({ id, coords }) => {
-        drawBusPath(id, coords);
-        coords.forEach((point, index) => {
-          if (index === 0) {
-            drawStartPoint(`${id}-start-${index}`, point);
-          } else if (index === coords.length - 1) {
-            drawEndPoint(`${id}-end-${index}`, point);
-          } else {
-            drawBusStation(`${id}-station-${index}`, point);
-          }
-        });
-      });
-      busData.busPoint.forEach(({ id, coords }) => {
-        drawBusPoint(id, coords);
-      });
-    });
+    ]).then(() => mapPointInit());
   });
 }
 
@@ -247,6 +292,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   map = null;
+  clearInterval(driverTimer);
 });
 </script>
 
