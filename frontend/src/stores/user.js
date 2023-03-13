@@ -4,5 +4,7 @@ export const useStore = defineStore('user', {
   state: () => ({
     type: '',
     tourId: '',
+    busNo: '',
+    headingType: '',
   }),
 });
