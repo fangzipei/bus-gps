@@ -1,12 +1,16 @@
 <template>
   <van-search v-model="value" placeholder="请输入搜索关键词" />
-  <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-    <van-cell v-for="item in list" :key="item.id" :title="item.number" :value="item.duringTime" is-link />
+  <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了">
+    <template v-for="bus in dataList.busList" :key="bus.id">
+      <van-cell :title="bus.busNo + '(' + bus.upStart + '-' + bus.upEnd + ')'" :label="bus.runTime" is-link />
+      <van-cell :title="bus.busNo + '(' + bus.downStart + '-' + bus.downEnd + ')'" :label="bus.runTime" is-link />
+    </template>
   </van-list>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useStore } from '../stores/user';
+import { request } from '../http';
 
 const store = useStore();
 
@@ -14,21 +18,14 @@ const value = ref('');
 const list = ref([]);
 const loading = ref(false);
 const finished = ref(false);
-const onLoad = () => {
-  setTimeout(() => {
-    for (let i = 0; i < 10; i++) {
-      list.value.push({
-        id: i + 1,
-        number: `${i + 1}路(xxx站-xxx站)`,
-        duringTime: '6:00-18:00',
-        status: Math.round(Math.random() * 2),
-      });
-    }
-    loading.value = false;
-    if (list.value.length >= 40) {
-      finished.value = true;
-    }
-  }, 1000);
-};
+const dataList = reactive({
+  busList: [],
+});
+
+onMounted(() => {
+  request('/common/getBusInfos', null, 'GET').then((res) => {
+    dataList.busList = res.data;
+  });
+});
 </script>
 <style lang="less" scoped></style>
